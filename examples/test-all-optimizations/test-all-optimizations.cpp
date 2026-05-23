@@ -510,7 +510,7 @@ void test_gguf_metadata_defaults() {
 // TEST 13: Vocabulary Special Tokens / EOG Workarounds
 // ---------------------------------------------------------------------
 // Verify that standard special tokens and custom tokenizer workarounds are correctly evaluated as EOG (End of Generation)
-bool vocab_token_is_eog(const std::string & text, bool is_o200k_harmony_solar) {
+static bool vocab_token_is_eog(const std::string & text, bool is_o200k_harmony_solar) {
     if (text == "<|endoftext|>" || text == "<|im_end|>") {
         return true;
     }
@@ -521,7 +521,7 @@ bool vocab_token_is_eog(const std::string & text, bool is_o200k_harmony_solar) {
     return false;
 }
 
-void test_vocab_special_tokens() {
+static void test_vocab_special_tokens() {
     print_header("Vocabulary Special Tokens and EOG Workarounds");
 
     // Case A: standard special tokens are always EOG
@@ -530,11 +530,11 @@ void test_vocab_special_tokens() {
 
     // Case B: o200k_harmony solar open workaround: "<|end|>" is NOT EOG
     bool eog_2 = !vocab_token_is_eog("<|end|>", true);
-    print_result("Solar open workaround: "<|end|>" is successfully bypassed (not EOG)", eog_2);
+    print_result("Solar open workaround: \"<|end|>\" is successfully bypassed (not EOG)", eog_2);
 
     // Case C: standard model: "<|end|>" is EOG
     bool eog_3 = vocab_token_is_eog("<|end|>", false);
-    print_result("Standard model: "<|end|>" behaves normally as EOG", eog_3);
+    print_result("Standard model: \"<|end|>\" behaves normally as EOG", eog_3);
 
     assert(eog_1 && eog_2 && eog_3);
 }
@@ -543,14 +543,14 @@ void test_vocab_special_tokens() {
 // TEST 14: Dynamic RoPE Context Scaling Calculations
 // ---------------------------------------------------------------------
 // Verify dynamic calculations for RoPE scaling factors
-float calculate_rope_freq_scale(float factor, const std::string & type) {
+static float calculate_rope_freq_scale(float factor, const std::string & type) {
     if (type == "linear") {
         return factor == 0.0f ? 1.0f : 1.0f / factor;
     }
     return 1.0f;
 }
 
-void test_rope_context_scaling() {
+static void test_rope_context_scaling() {
     print_header("Dynamic RoPE Context Scaling Calculations");
 
     // Case A: Linear scaling with factor = 2.0f (frequency scale should be 0.5f)
