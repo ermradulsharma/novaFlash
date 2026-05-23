@@ -6,13 +6,13 @@
 #include <algorithm>
 
 // Helper structure to print pretty formatted test headers
-void print_header(const std::string & title) {
+static void print_header(const std::string & title) {
     std::cout << "\033[1;36m====================================================================\033[0m\n";
     std::cout << "\033[1;35m[TEST SUITE] " << title << "\033[0m\n";
     std::cout << "\033[1;36m====================================================================\033[0m\n";
 }
 
-void print_result(const std::string & name, bool success) {
+static void print_result(const std::string & name, bool success) {
     if (success) {
         std::cout << "  \033[1;32m[PASS]\033[0m " << name << "\n";
     } else {
@@ -55,7 +55,7 @@ bool utf8_is_complete(const std::string & s) {
     return true;
 }
 
-void test_utf8_completion() {
+static void test_utf8_completion() {
     print_header("UTF-8 Character Completion (Reasoning Budget Safety)");
     
     // ASCII is always complete
@@ -99,7 +99,7 @@ struct token_matcher_test {
     }
 };
 
-void test_token_matcher() {
+static void test_token_matcher() {
     print_header("Sliding History Token Matcher (Multiple Thinkers Tags)");
 
     token_matcher_test matcher;
@@ -141,7 +141,7 @@ dsv4_state_layout make_layout(int64_t compress_ratio, int64_t head_dim) {
     return { width, rows, width * rows };
 }
 
-void test_dsv4_layouts() {
+static void test_dsv4_layouts() {
     print_header("DeepSeek-V4 Generic State Layouts");
 
     // Standard DSv4 with ratio = 4, head_dim = 128
@@ -166,7 +166,7 @@ void test_dsv4_layouts() {
 // TEST 4: MiniCPM-3 Dynamic Scales Parsing
 // ---------------------------------------------------------------------
 // Checks dynamic CPM-3 residual connection connection scaling
-void test_minicpm_scales() {
+static void test_minicpm_scales() {
     print_header("MiniCPM-3 Residual and Depth Scaling");
 
     float scale_depth = 1.4f;
@@ -205,7 +205,7 @@ iswa_split_status simulate_iswa_split(bool simple_fails, bool equal_fails) {
     return ISWA_SPLIT_SEQ;
 }
 
-void test_iswa_split_fallback() {
+staticvoid test_iswa_split_fallback() {
     print_header("ISWA KV Cache Batch Split Fallback Logic");
 
     // Case A: Simple split succeeds
@@ -238,7 +238,7 @@ int get_active_tokens_for_layer(int layer, int last_kv, int n_tokens, int n_outp
     return (layer > last_kv) ? n_outputs : n_tokens;
 }
 
-void test_early_token_stripping() {
+static void test_early_token_stripping() {
     print_header("Early Token-Stripping Dynamic Length Scaling (Gemma-4/Gemma-3n)");
 
     const int total_tokens = 512; // Prefill prompt size
@@ -271,7 +271,7 @@ int get_bounded_draft_tokens(int n_max, int user_requested_draft) {
     return std::min(user_requested_draft, n_max);
 }
 
-void test_speculative_bounds() {
+static void test_speculative_bounds() {
     print_header("Speculative Drafting Parametric Bounds");
 
     const int n_max_model = 16;
@@ -297,7 +297,7 @@ int map_main_expert_to_chunk(int main_expert_index, int n_group_experts) {
     return main_expert_index / n_group_experts;
 }
 
-void test_grovemoe_index_mapping() {
+static void test_grovemoe_index_mapping() {
     print_header("GroveMoE Chunk Expert Index Mapping");
 
     const int n_group_experts = 4;
@@ -322,7 +322,7 @@ int64_t compute_recurrent_conv_state_size(int64_t d_conv, int64_t d_inner, int64
     return (d_conv - 1) * d_inner * n_seqs;
 }
 
-void test_recurrent_conv_state() {
+static void test_recurrent_conv_state() {
     print_header("Recurrent Memory Convolution State Layout");
 
     // Standard FalconMamba state size calculations
@@ -348,7 +348,7 @@ size_t compute_dsv4_cache_offset(int64_t seq_id, uint32_t row, size_t row_size, 
     return (size_t) seq_id * nb2 + (size_t) row * nb1;
 }
 
-void test_dsv4_cache_bounds() {
+static void test_dsv4_cache_bounds() {
     print_header("Compressed KV Cache Index Offsets & Boundaries");
 
     const size_t row_size = 256;      // elements row size in bytes
@@ -421,7 +421,7 @@ struct reasoning_budget_simulation_ctx {
     }
 };
 
-void test_reasoning_transitions() {
+static void test_reasoning_transitions() {
     print_header("Reasoning Budget State Machine Transitions Simulation");
 
     reasoning_budget_simulation_ctx ctx;
@@ -484,7 +484,7 @@ struct mock_gguf_metadata {
     }
 };
 
-void test_gguf_metadata_defaults() {
+static void test_gguf_metadata_defaults() {
     print_header("GGUF Metadata Scaling Bounds and Defaults Fallbacks");
 
     mock_gguf_metadata metadata;
